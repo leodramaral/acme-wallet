@@ -1,1 +1,1 @@
-export * from './user/create-user.schema';
+export * from './user/create-user.schema.js';
