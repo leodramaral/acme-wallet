@@ -30,6 +30,9 @@ importers:
       '@nestjs/platform-express':
         specifier: ^11.0.1
         version: 11.1.13(@nestjs/common@11.1.13(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.13)
+      '@repo/schemas':
+        specifier: workspace:*
+        version: link:../../packages/schemas
       nestjs-zod:
         specifier: ^5.1.1
         version: 5.1.1(@nestjs/common@11.1.13(reflect-metadata@0.2.2)(rxjs@7.8.2))(rxjs@7.8.2)(zod@4.3.6)
@@ -58,12 +61,6 @@ importers:
       '@repo/db':
         specifier: workspace:*
         version: link:../../packages/database
-      '@repo/schemas':
-        specifier: workspace:*
-        version: link:../../packages/schemas
-      '@repo/tsconfig':
-        specifier: workspace:*
-        version: link:../../packages/tsconfig
       '@types/express':
         specifier: ^5.0.0
         version: 5.0.6
@@ -134,9 +131,6 @@ importers:
       '@repo/schemas':
         specifier: workspace:*
         version: link:../../packages/schemas
-      '@repo/tsconfig':
-        specifier: workspace:*
-        version: link:../../packages/tsconfig
       '@types/node':
         specifier: ^24.10.1
         version: 24.10.12
@@ -201,8 +195,10 @@ importers:
       zod:
         specifier: latest
         version: 4.3.6
-
-  packages/tsconfig: {}
+    devDependencies:
+      typescript:
+        specifier: ^5.7.3
+        version: 5.9.3
 
 packages:
 

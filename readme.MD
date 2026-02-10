@@ -1,97 +1,46 @@
-1. Certifique-se de ter o Node.js e o pnpm instalado:
+# ACME WALLET
 
-`npm install -g pnpm`
+## Requisitos
 
-2. Crie a pasta do projeto e inicie o pnpm
+- Node.js (versao LTS recomendada)
+- pnpm (o projeto usa pnpm)
+- Postgres (ou uma URL de conexao valida para DATABASE_URL)
 
-`pnpm init`
+## Instalacao
 
-3. Crie um arquivo chamado pnpm-workspace.yaml na raiz
-```yaml
-packages:
-  - 'apps/*'
-  - 'packages/*'
-```
-
-4. Instale o turbo repo
-
-`pnpm add turbo -Dw`
-
-5. Criar o backend Nest.JS
+Na raiz do projeto:
 
 ```bash
-cd apps
-# Se você tem o nest-cli instalado globalmente:
-nest new api --package-manager pnpm
-# Se não tiver, use: npx @nestjs/cli new api --package-manager pnpm
+pnpm install
 ```
 
-6. Criar o frontend
+## Variaveis de ambiente
+
+Crie um arquivo `.env` em:
+
+- `packages/database/`
+- `apps/api/`
+
+Conteudo minimo:
 
 ```bash
-pnpm create vite web --template react-ts
+DATABASE_URL={YOUR_DATABASE_URL}
 ```
 
-7. Configurar o turbo repo
-Volte a raiz do monorepo e crie o arquivo `turbo.json`
+## Executar a aplicacao
 
-```json
-{
-  "$schema": "https://turbo.build/schema.json",
-  "tasks": {
-    "build": {
-      "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".next/**", "out/**"]
-    },
-    "dev": {
-      "cache": false,
-      "persistent": true
-    },
-    "lint": {},
-    "test": {}
-  }
-}
+```bash
+pnpm dev
 ```
 
-8. Ajustar o `package.json` na raiz
+## Testes
 
-```javascript
-{
-    {
-        "name": "acme-wallet",
-        "packageManager": "pnpm@10.28.2",
-        "scripts": {
-            "dev": "turbo dev",
-            "build": "turbo build",
-            "lint": "turbo lint",
-            "test": "turbo test"
-        },
-        "devDependencies": {
-            "turbo": "^2.8.3"
-        }
-    }
-}
+```bash
+pnpm test
 ```
 
-9. Compartilhando configurações
-- crie a pasta `mkdir -p packages/tsconfig`
-- crie um `packages/tsconfig/package.json`
-```json
-{
-    {
-        "name": "@repo/tsconfig",
-        "version": "0.0.0",
-        "private": true
-    }
-}
+## Prisma Studio
+
+```bash
+pnpm db:studio
 ```
-- crie um `packages/tsconfig/base.json` com as regras de TS
-
-10. instale as dependências
-`pnpm init`
-
-11. Ajuste o `package.json` do Nest
-Adicione `"dev": "nest start --watch"` 
-
-12. Rode a aplicação
-`pnpm dev`
