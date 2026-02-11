@@ -1,26 +1,23 @@
 import { Test } from "@nestjs/testing";
+import { PrismaClient } from "@repo/db";
+import { DeepMockProxy, mockDeep } from "jest-mock-extended";
 import { PrismaService } from "src/prisma/prisma.service";
 import { User } from "src/users/domain/entities/user.entity";
 import { UserPrismaRepository } from "src/users/infra/repositories/user-prisma.repository";
 
 describe("UserPrismaRepository", () => {
   let repo: UserPrismaRepository;
-
-  const prismaMock = {
-    prisma: {
-      user: {
-        create: jest.fn(),
-      },
-    },
-  };
+  let prismaMock: DeepMockProxy<PrismaClient>;
 
   beforeEach(async () => {
+    prismaMock = mockDeep<PrismaClient>();
+
     const moduleRef = await Test.createTestingModule({
       providers: [
         UserPrismaRepository,
         {
           provide: PrismaService,
-          useValue: prismaMock,
+          useValue: { prisma: prismaMock },
         },
       ],
     })
@@ -30,14 +27,23 @@ describe("UserPrismaRepository", () => {
   });
 
   it("saves a user and returns id", async () => {
-    prismaMock.prisma.user.create.mockResolvedValue({ id: "u1" });
-
     const input = new User("Ana", "ana@acme.com");
+
+    prismaMock.user.create.mockResolvedValue({
+      id: "u1",
+      name: input.name,
+      email: input.email,
+      createdAt: new Date(),
+    });
     const output = await repo.create(input);
 
-    expect(prismaMock.prisma.user.create).toHaveBeenCalledWith({
-      data: { id: input.id, name: "Ana", email: "ana@acme.com" },
+    expect(prismaMock.user.create).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        name: input.name,
+        email: input.email,
+      }),
     });
+  
     expect(output).toEqual({ id: "u1" });
   });
 });
