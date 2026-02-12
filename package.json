@@ -15,12 +15,7 @@
     "prepare": "husky"
   },
   "lint-staged": {
-    "apps/**/*.{ts,tsx}": [
-      "turbo run lint --filter"
-    ],
-    "packages/**/*.{ts,tsx}": [
-      "turbo run lint --filter"
-    ]
+    "**/*.{ts,tsx}": "eslint --fix"
   },
   "devDependencies": {
     "@commitlint/cli": "^20.4.1",
