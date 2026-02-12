@@ -6,6 +6,7 @@ import reactRefresh from 'eslint-plugin-react-refresh';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 import prettierConfig from './prettier.config.js';
+import eslintPluginJest from 'eslint-plugin-jest';
 
 /**
  * Regras compartilhadas entre todos os projetos
@@ -20,6 +21,9 @@ const sharedRules = {
 const baseConfigs = [
   eslint.configs.recommended,
   eslintPluginPrettierRecommended,
+  {
+    files: ['**/*.{ts,tsx}'],
+  }
 ];
 
 /**
@@ -33,10 +37,14 @@ export const nestjs = (tsconfigRootDir) => [
   ...baseConfigs,
   ...tseslint.configs.recommendedTypeChecked,
   {
+    plugins: {
+      'jest': eslintPluginJest,
+    },
     languageOptions: {
       globals: {
         ...globals.node,
         ...globals.jest,
+        ...eslintPluginJest.environments.globals.globals,
       },
       sourceType: 'commonjs',
       parserOptions: {
@@ -44,15 +52,14 @@ export const nestjs = (tsconfigRootDir) => [
         tsconfigRootDir,
       },
     },
-  },
-  {
     rules: {
       ...sharedRules,
-      '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-floating-promises': 'warn',
       '@typescript-eslint/no-unsafe-argument': 'warn',
+      '@typescript-eslint/unbound-method': 'off',
+      'jest/unbound-method': 'error',
     },
-  },
+  }
 ];
 
 /**
@@ -65,7 +72,6 @@ export const react = [
   ...baseConfigs,
   ...tseslint.configs.recommended,
   {
-    files: ['**/*.{ts,tsx}'],
     plugins: {
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,

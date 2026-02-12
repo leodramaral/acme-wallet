@@ -29,16 +29,15 @@ describe('UserController (Integration)', () => {
   it('/users (POST) - should create a user', async () => {
     const payload = { name: 'Leandro Amaral', email: 'leandro@email.org.br' };
     // userRepository.create.mockResolvedValue({
-    //     id: 'uuid-123',
-    //     ...payload
+    //   id: 'uuid-123',
+    //   ...payload,
     // });
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const response = await request(app.getHttpServer())
       .post('/users')
-      .send(payload);
-
-    expect(response.status).toBe(201);
+      .send(payload)
+      .expect('Content-Type', /json/)
+      .expect(201);
 
     expect(response.body).toEqual(
       expect.objectContaining({
@@ -52,9 +51,9 @@ describe('UserController (Integration)', () => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const response = await request(app.getHttpServer())
       .post('/users')
-      .send(payload);
-
-    expect(response.status).toBe(400);
+      .send(payload)
+      .expect('Content-Type', /json/)
+      .expect(400);
 
     expect(response.body).toEqual(
       expect.objectContaining({

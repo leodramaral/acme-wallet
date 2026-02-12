@@ -36,7 +36,6 @@ describe('UserPrismaRepository', () => {
     });
     const output = await repo.create(input);
 
-    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(prismaMock.user.create).toHaveBeenCalledWith({
       data: expect.objectContaining({
         name: input.name,

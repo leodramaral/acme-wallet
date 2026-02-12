@@ -30,5 +30,6 @@ describe('Create User Use Case', () => {
         email: 'leandro@email.org.br',
       }),
     );
+    expect(userRepository.create).toHaveBeenCalledTimes(1);
   });
 });
