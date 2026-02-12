@@ -1,29 +1,29 @@
-import { randomUUID } from "crypto";
-import { User } from "../../domain/entities/user.entity";
-import { IUserRepository } from "src/users/domain/repositories/user.repository";
-import { Injectable } from "@nestjs/common";
+import { randomUUID } from 'crypto';
+import { User } from '../../domain/entities/user.entity';
+import { IUserRepository } from 'src/users/domain/repositories/user.repository';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export default class CreateUserUseCase {
-    constructor(private readonly userRepository: IUserRepository) {}
+  constructor(private readonly userRepository: IUserRepository) {}
 
-    async execute(input: Input): Promise<Output> {
-        const id = randomUUID();
-        const user = new User(input.name, input.email, id);
+  async execute(input: Input): Promise<Output> {
+    const id = randomUUID();
+    const user = new User(input.name, input.email, id);
 
-        await this.userRepository.create(user);
+    await this.userRepository.create(user);
 
-        return {
-            id: user.id,
-        }
-    }
+    return {
+      id: user.id,
+    };
+  }
 }
 
 type Input = {
-    name: string;
-    email: string;
-}
+  name: string;
+  email: string;
+};
 
 type Output = {
-    id: string;
-}
+  id: string;
+};

@@ -13,8 +13,7 @@ export class UsersController {
     const input = {
       name: body.name,
       email: body.email,
-    }
+    };
     return this.createUseCase.execute(input);
   }
-
 }

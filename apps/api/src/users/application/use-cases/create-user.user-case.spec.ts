@@ -1,31 +1,34 @@
-import CreateUserUseCase from "./create-user.use-case";
-import { IUserRepository } from "src/users/domain/repositories/user.repository";
+import CreateUserUseCase from './create-user.use-case';
+import { IUserRepository } from 'src/users/domain/repositories/user.repository';
 import { mock, MockProxy } from 'jest-mock-extended';
 
 describe('Create User Use Case', () => {
-    let userRepository: MockProxy<IUserRepository>;
-    let sut: CreateUserUseCase;
+  let userRepository: MockProxy<IUserRepository>;
+  let sut: CreateUserUseCase;
 
-    beforeEach(() => {
-        userRepository = mock<IUserRepository>();
-        sut = new CreateUserUseCase(userRepository);
+  beforeEach(() => {
+    userRepository = mock<IUserRepository>();
+    sut = new CreateUserUseCase(userRepository);
+  });
+
+  it('should be able to create a new user and return this id', async () => {
+    userRepository.create.mockResolvedValue({
+      id: '123',
     });
 
-    it('should be able to create a new user and return this id', async () => {
-        userRepository.create.mockResolvedValue({
-            id: '123',
-        });
+    const input = {
+      name: 'Leandro Amaral',
+      email: 'leandro@email.org.br',
+    };
+    const output = await sut.execute(input);
 
-        const input = {
-            name: 'Leandro Amaral',
-            email: 'leandro@email.org.br'
-        }
-        const output = await sut.execute(input);
+    expect(output).toHaveProperty('id');
 
-        expect(output).toHaveProperty('id');
-        expect(userRepository.create).toHaveBeenCalledWith(expect.objectContaining({
-            name: 'Leandro Amaral',
-            email: 'leandro@email.org.br'
-        }));
-    });
-})
+    expect(userRepository.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        name: 'Leandro Amaral',
+        email: 'leandro@email.org.br',
+      }),
+    );
+  });
+});
