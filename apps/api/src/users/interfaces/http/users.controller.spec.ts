@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { IUserRepository } from 'src/users/domain/repositories/user.repository';
 import request from 'supertest';
 import { UsersModule } from 'src/users/users.module';
-import { MockProxy, mock } from 'jest-mock-extended';
+import { MockProxy, mock } from 'vitest-mock-extended';
 
 describe('UserController (Integration)', () => {
   let app: INestApplication;
@@ -23,7 +23,7 @@ describe('UserController (Integration)', () => {
   });
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('/users (POST) - should create a user', async () => {
